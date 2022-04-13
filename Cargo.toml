@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "pixpipe",
+    "pixpipe_glium"
+]

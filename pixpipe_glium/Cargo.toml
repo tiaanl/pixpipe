@@ -1,0 +1,9 @@
+[package]
+name = "pixpipe_glium"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pixpipe = { path = "../pixpipe" }
+glium = "0.31"
+winit = "0.26"
