@@ -67,7 +67,11 @@ impl PixBuf {
         self.height
     }
 
-    pub fn as_slice(&self) -> &[u8] {
+    pub fn as_slice(&self) -> &[Color] {
+        self.data.as_slice()
+    }
+
+    pub fn as_raw_slice(&self) -> &[u8] {
         unsafe {
             std::slice::from_raw_parts(
                 self.data.as_ptr() as *mut u8,

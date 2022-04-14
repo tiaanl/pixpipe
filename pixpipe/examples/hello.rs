@@ -12,5 +12,12 @@ fn main() {
     pix_buf.set(20, 30, Color::GREEN);
     pix_buf.set(30, 20, Color::BLUE);
 
-    image::save_buffer("test.png", pix_buf.as_slice(), WIDTH, HEIGHT, ColorType::Rgba8).unwrap();
+    image::save_buffer(
+        "test.png",
+        pix_buf.as_slice(),
+        WIDTH,
+        HEIGHT,
+        ColorType::Rgba8,
+    )
+    .unwrap();
 }
