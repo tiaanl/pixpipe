@@ -14,7 +14,7 @@ fn main() {
 
     image::save_buffer(
         "test.png",
-        pix_buf.as_slice(),
+        pix_buf.as_raw_slice(),
         WIDTH,
         HEIGHT,
         ColorType::Rgba8,
