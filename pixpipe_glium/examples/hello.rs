@@ -1,6 +1,5 @@
 use glium::{glutin, Surface};
 use pixpipe::{Color, PixBuf};
-use winit::event_loop::ControlFlow;
 
 fn main() {
     let event_loop = glutin::event_loop::EventLoop::new();
@@ -29,34 +28,33 @@ fn main() {
             glutin::event::Event::WindowEvent { event, .. } => match event {
                 glutin::event::WindowEvent::CloseRequested => {
                     *control_flow = glutin::event_loop::ControlFlow::Exit;
-                    return;
                 }
 
                 glutin::event::WindowEvent::Resized(size) => {
                     pipeline.resize(size.width, size.height);
                 }
 
-                _ => return,
+                _ => {}
             },
 
             glutin::event::Event::NewEvents(cause) => match cause {
                 glutin::event::StartCause::ResumeTimeReached { .. } => (),
                 glutin::event::StartCause::Init => (),
-                _ => return,
+                _ => {}
             },
 
-            glutin::event::Event::MainEventsCleared => {
+            glutin::event::Event::RedrawRequested(_) => {
                 let mut target = display.draw();
                 target.clear_color(0.0, 0.0, 0.0, 1.0);
 
                 if !pipeline.draw(&display, &mut target, &pix_buf).is_ok() {
-                    *control_flow = ControlFlow::Exit;
+                    *control_flow = glutin::event_loop::ControlFlow::Exit;
                 }
 
                 target.finish().unwrap();
             }
 
-            _ => return,
+            _ => {}
         }
     });
 }

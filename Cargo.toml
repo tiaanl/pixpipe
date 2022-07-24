@@ -1,5 +1,7 @@
 [workspace]
+resolver = "2"
 members = [
     "pixpipe",
-    "pixpipe_glium"
+    "pixpipe_glium",
+    "pixpipe_wgpu"
 ]
