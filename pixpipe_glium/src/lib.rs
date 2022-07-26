@@ -76,13 +76,17 @@ impl Pipeline {
         let texture = glium::texture::Texture2d::new(facade, PixBufTexture2dDataSource(pix_buf))
             .map_err(PipelineError::TextureError)?;
 
-        const SCALE: f32 = 2.0;
-        const ASPECT_RATIO_ADJUST: f32 = 1.2;
+        const CRT_ASPECT_RATIO_ADJUST: f32 = 1.2;
+
+        let scale =
+            self.viewport_height as f32 / (pix_buf.height() as f32 * CRT_ASPECT_RATIO_ADJUST);
+        let scale = scale.floor();
+        let scale = scale.max(1.0);
         let uniforms = uniform! {
             matrix: [
-                [pix_buf.width() as f32 / self.viewport_width * SCALE, 0.0, 0.0, 0.0],
-                [0.0, pix_buf.height() as f32 / self.viewport_height * SCALE * ASPECT_RATIO_ADJUST, 0.0, 0.0],
-                [0.0, 0.0, SCALE, 0.0],
+                [pix_buf.width() as f32 / self.viewport_width * scale, 0.0, 0.0, 0.0],
+                [0.0, pix_buf.height() as f32 / self.viewport_height * scale * CRT_ASPECT_RATIO_ADJUST, 0.0, 0.0],
+                [0.0, 0.0, scale, 0.0],
                 [0.0, 0.0, 0.0, 1.0]
             ],
             tex: glium::uniforms::Sampler(&texture, SAMPLER_BEHAVIOUR),

@@ -1,6 +1,6 @@
 //! pixpipe (Pixel Pipeline)
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -82,7 +82,13 @@ impl PixBuf {
 
     pub fn set(&mut self, left: u32, top: u32, color: Color) {
         if let Some(c) = self.data.get_mut((top * self.width + left) as usize) {
-            *c = color
+            *c = color;
+        }
+    }
+
+    pub fn set_at_index(&mut self, index: u32, color: Color) {
+        if let Some(c) = self.data.get_mut(index as usize) {
+            *c = color;
         }
     }
 
