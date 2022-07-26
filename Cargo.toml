@@ -2,6 +2,5 @@
 resolver = "2"
 members = [
     "pixpipe",
-    "pixpipe_glium",
-    "pixpipe_wgpu"
+    "pixpipe_glium"
 ]
