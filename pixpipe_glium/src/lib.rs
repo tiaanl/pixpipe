@@ -76,12 +76,14 @@ impl Pipeline {
         let texture = glium::texture::Texture2d::new(facade, PixBufTexture2dDataSource(pix_buf))
             .map_err(PipelineError::TextureError)?;
 
+        const SCALE: f32 = 2.0;
+        const ASPECT_RATIO_ADJUST: f32 = 1.2;
         let uniforms = uniform! {
             matrix: [
-                [pix_buf.width() as f32 / self.viewport_width, 0.0, 0.0, 0.0],
-                [0.0, pix_buf.height() as f32 / self.viewport_height, 0.0, 0.0],
-                [0.0, 0.0, 1.0, 0.0],
-                [0.0, 0.0, 0.0, 1.0f32]
+                [pix_buf.width() as f32 / self.viewport_width * SCALE, 0.0, 0.0, 0.0],
+                [0.0, pix_buf.height() as f32 / self.viewport_height * SCALE * ASPECT_RATIO_ADJUST, 0.0, 0.0],
+                [0.0, 0.0, SCALE, 0.0],
+                [0.0, 0.0, 0.0, 1.0]
             ],
             tex: glium::uniforms::Sampler(&texture, SAMPLER_BEHAVIOUR),
         };
@@ -145,62 +147,6 @@ impl Pipeline {
                         f_color = texture(tex, v_tex_coords);
                     }
                 "
-            },
-
-            110 => {
-                vertex: "
-                    #version 110
-    
-                    uniform mat4 matrix;
-    
-                    attribute vec2 position;
-                    attribute vec2 tex_coords;
-    
-                    varying vec2 v_tex_coords;
-    
-                    void main() {
-                        gl_Position = matrix * vec4(position, 0.0, 1.0);
-                        v_tex_coords = tex_coords;
-                    }
-                ",
-
-                fragment: "
-                    #version 110
-                    uniform sampler2D tex;
-                    varying vec2 v_tex_coords;
-    
-                    void main() {
-                        gl_FragColor = texture2D(tex, v_tex_coords);
-                    }
-                ",
-            },
-
-            100 => {
-                vertex: "
-                    #version 100
-    
-                    uniform lowp mat4 matrix;
-    
-                    attribute lowp vec2 position;
-                    attribute lowp vec2 tex_coords;
-    
-                    varying lowp vec2 v_tex_coords;
-    
-                    void main() {
-                        gl_Position = matrix * vec4(position, 0.0, 1.0);
-                        v_tex_coords = tex_coords;
-                    }
-                ",
-
-                fragment: "
-                    #version 100
-                    uniform lowp sampler2D tex;
-                    varying lowp vec2 v_tex_coords;
-    
-                    void main() {
-                        gl_FragColor = texture2D(tex, v_tex_coords);
-                    }
-                ",
             },
         )
         .map_err(PipelineError::ProgramError)

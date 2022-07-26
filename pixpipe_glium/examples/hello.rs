@@ -43,15 +43,16 @@ fn main() {
                 _ => {}
             },
 
-            glutin::event::Event::RedrawRequested(_) => {
+            glutin::event::Event::MainEventsCleared => {
                 let mut target = display.draw();
                 target.clear_color(0.0, 0.0, 0.0, 1.0);
 
-                if !pipeline.draw(&display, &mut target, &pix_buf).is_ok() {
+                if let Err(err) = pipeline.draw(&display, &mut target, &pix_buf) {
+                    eprintln!("ERROR: {:?}", err);
                     *control_flow = glutin::event_loop::ControlFlow::Exit;
+                } else {
+                    target.finish().unwrap();
                 }
-
-                target.finish().unwrap();
             }
 
             _ => {}
