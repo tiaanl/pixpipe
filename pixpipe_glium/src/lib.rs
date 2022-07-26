@@ -1,3 +1,5 @@
+pub use pixpipe;
+
 use glium::uniforms::{MagnifySamplerFilter, MinifySamplerFilter, SamplerWrapFunction};
 use glium::{implement_vertex, program, uniform, Surface};
 use pixpipe::{Color, PixBuf};
